@@ -1,0 +1,5 @@
+2026-09-29 auth WARN Too many attempts
+2026-09-29 database ERROR Connection timeout
+2026-09-29 database ERROR Query failed
+2026-09-29 api WARN High response time
+2026-09-29 auth ERROR Login failed
