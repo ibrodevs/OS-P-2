@@ -1,0 +1,46 @@
+name: Generate strace results
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - hello.py
+      - test.txt
+      - run_analysis.sh
+      - .github/workflows/strace.yml
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  generate:
+    if: github.actor != 'github-actions[bot]'
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Install strace
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y strace
+
+      - name: Run practice analysis
+        run: |
+          chmod +x report.sh run_analysis.sh
+          ./run_analysis.sh
+
+      - name: Commit generated results
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add README.md trace.txt cat_trace.txt python_summary.txt cat_summary.txt analysis_results.txt
+          if git diff --cached --quiet; then
+            echo "No generated changes"
+            exit 0
+          fi
+          git commit -m "Add generated strace results"
+          git push
