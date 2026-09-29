@@ -1,0 +1,16 @@
+Файл: test.txt
+
+Полный trace (число строк):
+python3 hello.py: 572
+cat:              123
+
+Всего системных вызовов по strace -c:
+python3 hello.py: 571
+cat:              121
+
+Вызовов, непосредственно связанных с файлом 'test.txt': 8
+(open/openat + операции с его файловым дескриптором до close)
+
+Открытие исследуемого файла в Python trace:
+2597  execve("/usr/bin/python3", ["python3", "hello.py", "test.txt"], 0x7ffd3736bb68 /* 114 vars */) = 0
+2597  openat(AT_FDCWD, "test.txt", O_RDONLY|O_CLOEXEC) = 3
